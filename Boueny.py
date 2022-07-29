@@ -41,6 +41,8 @@ class Database:
         
         print("generating caption embeddings")
         self.caption_embeddings = self.generate_caption_embeddings(list(self.caption_data.keys()))
+        
+        self.get_image_embeddings
 
     def append_image_caption_ids(self, coco_data):
         caption_list = []
@@ -80,7 +82,7 @@ class Database:
         true_image_id = self.get_random_image_id()
         confuser_image_id = self.get_random_image_id()
         true_caption_id = random.choice(self.image_data[true_image_id][1])
-        return true_caption_id, true_image_id, confuser_image_id
+        return self.caption_embeddings[true_caption_id], self.resnet18_features[true_image_id], self.resnet18_features[confuser_image_id]
     
     def get_random_image_id(self):
         return random.choice(list(self.image_data.keys()))
@@ -91,16 +93,17 @@ class Database:
     def get_caption_ids(self, image_id: int):
         return  self.image_data[image_id][1]
     
-def save_database(Database:str, FileName: str): 
+    def generate_image_embeddings(self, model):
+        self.image_embeddings = {image_id : model(self.resnet18_features[image_id]) for image_id in self.image_data}
+    
+def save_database(database:str, FileName: str): 
     with open(FileName, mode = "wb") as opened_file:
-        pkl.dump(Database, opened_file)
+        pkl.dump(database, opened_file)
 
-def load_database(FileName:str):
+def load_database(FileName:str) -> Database:
     with open(FileName,"rb") as unopened_file:
-        Database = pkl.load(unopened_file)
-    return Database
+        database = pkl.load(unopened_file)
+    return database
     
 # database = Database()
 # save_database(database, "database.pkl")
-database = load_database("database.pkl")
-print("Done!")
