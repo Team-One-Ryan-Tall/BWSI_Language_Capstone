@@ -10,8 +10,7 @@ def tokenize(in_string):
 def create_bag_of_words(text, vocabulary=10000) -> Counter:
     return Counter(tokenize(text)).most_common(vocabulary)
 
-def InverseFrequency(bag_of_words, frequencies: Counter):
-    N = len(bag_of_words)
-    maximum = np.max(list(frequencies.values()))
+def InverseFrequency(frequencies: Counter, doc_count: int):
+    N = doc_count
     # nt = np.array(nt, dtype=float)
-    return {words : np.log10(1 / (counts/maximum)) for words, counts in frequencies.most_common()}
+    return {words : np.log10(N/counts) for words, counts in frequencies.most_common()}
