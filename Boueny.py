@@ -42,7 +42,7 @@ class Database:
         print("generating caption embeddings")
         self.caption_embeddings = self.generate_caption_embeddings(list(self.caption_data.keys()))
         
-        self.get_image_embeddings
+#         self.get_image_embeddings
 
     def append_image_caption_ids(self, coco_data):
         caption_list = []
